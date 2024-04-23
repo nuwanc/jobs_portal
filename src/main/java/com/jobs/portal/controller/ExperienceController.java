@@ -2,7 +2,6 @@ package com.jobs.portal.controller;
 
 import com.jobs.portal.entity.experience.Experience;
 import com.jobs.portal.entity.experience.ExperienceRepository;
-import com.jobs.portal.entity.skill.Skill;
 import com.jobs.portal.entity.user.User;
 import com.jobs.portal.entity.user.UserRepository;
 import org.springframework.http.ResponseEntity;

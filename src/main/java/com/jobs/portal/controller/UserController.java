@@ -18,7 +18,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-
     @GetMapping
     public String user(Authentication principal) {
         Optional<User> dbUser = userRepository.findByEmail(principal.getName());

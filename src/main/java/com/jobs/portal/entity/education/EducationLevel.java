@@ -1,7 +1,5 @@
 package com.jobs.portal.entity.education;
 
-import com.jobs.portal.entity.skill.SkillRating;
-
 public enum EducationLevel {
 
     GCSE(1,"General Certificate of Secondary Education"),

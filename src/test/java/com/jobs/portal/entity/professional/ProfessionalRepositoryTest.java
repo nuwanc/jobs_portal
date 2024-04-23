@@ -1,4 +1,4 @@
-package com.jobs.portal.entity.experience;
+package com.jobs.portal.entity.professional;
 
 import com.jobs.portal.entity.profile.Profile;
 import com.jobs.portal.entity.profile.ProfileRepository;
@@ -12,13 +12,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 
 @DataJpaTest
-public class ExperienceRepositoryTest {
+public class ProfessionalRepositoryTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ProfileRepository profileRepository;
     @Autowired
-    private ExperienceRepository experienceRepository;
+    private ProfessionalRepository professionalRepository;
 
     @Test
     public void testSave() {
@@ -35,20 +35,19 @@ public class ExperienceRepositoryTest {
         profile.setUser(user);
         profileRepository.save(profile);
 
-        Experience experience = new Experience();
-        experience.setProfile(profile);
-        experience.setCompany("ABC");
-        experience.setJobTitle("SE");
-        experience.setFromDate(LocalDate.of(2000,10,20));
-        experience.setToDate(LocalDate.of(2010,10,12));
-        experienceRepository.save(experience);
+        Professional professional = new Professional();
+        professional.setProfile(profile);
+        professional.setProfessionalBody("BCS");
+        professional.setName("PGD");
+        professional.setObtainedDate(LocalDate.of(2008,10,01));
+        professionalRepository.save(professional);
 
-        Assertions.assertEquals(experience.getCompany(),"ABC");
-        Assertions.assertEquals(experience.getJobTitle(),"SE");
+        Assertions.assertEquals(professional.getName(),"PGD");
+        Assertions.assertEquals(professional.getProfessionalBody(),"BCS");
     }
 
     @Test
-    public void testGetExperience() {
+    public void testGetProfessional() {
         User user = new User();
         user.setEmail("test@test.com");
         user.setPassword("test");
@@ -62,22 +61,20 @@ public class ExperienceRepositoryTest {
         profile.setUser(user);
         profileRepository.save(profile);
 
-        Experience experience = new Experience();
-        experience.setProfile(profile);
-        experience.setCompany("ABC");
-        experience.setJobTitle("SE");
-        experience.setFromDate(LocalDate.of(2000,10,20));
-        experience.setToDate(LocalDate.of(2010,10,12));
-        experienceRepository.save(experience);
+        Professional professional = new Professional();
+        professional.setProfile(profile);
+        professional.setProfessionalBody("BCS");
+        professional.setName("PGD");
+        professional.setObtainedDate(LocalDate.of(2008,10,01));
+        professionalRepository.save(professional);
 
-        Experience experience1 = new Experience();
-        experience1.setProfile(profile);
-        experience1.setCompany("BBC");
-        experience1.setJobTitle("SSE");
-        experience.setFromDate(LocalDate.of(2011,10,20));
-        experience.setToDate(LocalDate.of(2021,10,12));
-        experienceRepository.save(experience1);
+        Professional professional1 = new Professional();
+        professional1.setProfile(profile);
+        professional1.setProfessionalBody("Oracle");
+        professional1.setName("JCP");
+        professional1.setObtainedDate(LocalDate.of(2010,10,01));
+        professionalRepository.save(professional1);
 
-        Assertions.assertEquals(experienceRepository.findByProfileId(profile.getId()).size(),2);
+        Assertions.assertEquals(professionalRepository.findByProfileId(profile.getId()).size(),2);
     }
 }

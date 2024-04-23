@@ -2,7 +2,6 @@ package com.jobs.portal.controller;
 
 import com.jobs.portal.entity.professional.Professional;
 import com.jobs.portal.entity.professional.ProfessionalRepository;
-import com.jobs.portal.entity.profile.Profile;
 import com.jobs.portal.entity.user.User;
 import com.jobs.portal.entity.user.UserRepository;
 import org.springframework.http.ResponseEntity;
