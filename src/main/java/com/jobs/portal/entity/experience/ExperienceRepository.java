@@ -12,8 +12,11 @@ public interface ExperienceRepository extends JpaRepository<Experience,Long> {
     @Query("SELECT e.profile FROM Experience e WHERE e.jobTitle = :title")
     List<Profile> findByTitle(String title);
 
-    @Query("SELECT e.profile FROM Experience e WHERE e.jobTitle = :title AND DATEDIFF(YEAR,e.fromDate,e.toDate) >= :years")
+    @Query("SELECT e.profile FROM Experience e WHERE e.jobTitle = :title AND DATEDIFF(YEAR,e.fromDate,e.toDate) = :years")
     List<Profile> findByTitleAndYears(String title,int years);
+
+    @Query("SELECT e.profile FROM Experience e WHERE e.jobTitle = :title AND DATEDIFF(YEAR,e.fromDate,e.toDate) >= :years")
+    List<Profile> findByTitleAndMinimumYears(String title,int years);
 
 
 }

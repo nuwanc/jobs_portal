@@ -12,7 +12,10 @@ public interface SkillRepository extends JpaRepository<Skill,Long> {
     @Query("SELECT s.profile FROM Skill s WHERE s.skillName = :skillName ")
     List<Profile> findProfileBySkillName(String skillName);
 
-    @Query("SELECT s.profile FROM Skill s WHERE s.skillName = :skillName and s.noOfYears >= :noOfYears")
+    @Query("SELECT s.profile FROM Skill s WHERE s.skillName LIKE :skillName% and s.noOfYears >= :noOfYears")
+    List<Profile> findProfileBySkillNameAndMinimumYears(String skillName, int noOfYears );
+
+    @Query("SELECT s.profile FROM Skill s WHERE s.skillName LIKE :skillName% and s.noOfYears = :noOfYears")
     List<Profile> findProfileBySkillNameAndYears(String skillName, int noOfYears );
 
     List<Skill> findBySkillName(String skillName);

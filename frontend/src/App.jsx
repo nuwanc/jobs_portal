@@ -10,6 +10,7 @@ import Professional from "./components/Professional";
 import ProfessionalEdit from "./components/ProfessionalEdit";
 import Education from "./components/Education";
 import EducationEdit from "./components/EducationEdit";
+import Search from "./components/Search";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="professional.do" element={<Professional />} />
             <Route path="professional.do/:id" element={<ProfessionalEdit />} />
             <Route path="resume.do" element={<Resume />} />
+            <Route path="search.do" element={<Search />} />
          </Routes>
     </>
   )
