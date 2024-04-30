@@ -53,9 +53,9 @@ public class Skill {
         this.skillRating = skillRating;
     }
 
-    /*public Profile getProfile() {
+    public Profile getProfile() {
         return profile;
-    }*/
+    }
 
     public void setProfile(Profile profile) {
         this.profile = profile;

@@ -85,4 +85,50 @@ public class EducationRepositoryTest {
         List<Education> educationList1 = educationRepository.findByProfileIdOrderByLevel(profile.getId());
         Assertions.assertEquals(educationList1.size(),2);
     }
+
+    @Test
+    public void testFindByLevel() {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setPassword("test");
+        user.setFirstName("testFirst");
+        user.setLastName("testLast");
+        userRepository.save(user);
+
+        Profile profile = new Profile();
+        profile.setEmail(user.getEmail());
+        profile.setName(user.getFirstName() + " " + user.getLastName());
+        profile.setUser(user);
+        profileRepository.save(profile);
+
+        Education education = new Education();
+        education.setProfile(profile);
+        education.setField("science");
+        education.setInstitute("Kingston Uni.");
+        education.setDegree("B.Sc.");
+        education.setLevel(EducationLevel.BACHELORS);
+        educationRepository.save(education);
+
+
+        Education education1 = new Education();
+        education1.setProfile(profile);
+        education1.setField("science");
+        education1.setInstitute("Kingston Uni.");
+        education1.setDegree("M.Sc.");
+        education1.setLevel(EducationLevel.MASTERS);
+        educationRepository.save(education1);
+
+        Education education2 = new Education();
+        education2.setProfile(profile);
+        education2.setField("science");
+        education2.setInstitute("smc");
+        education2.setDegree("AL");
+        education2.setLevel(EducationLevel.GCSEAL);
+        education2.setPasses(3);
+        educationRepository.save(education2);
+
+        List<Profile> profiles = educationRepository.findByPasses(EducationLevel.GCSEAL,3);
+        Assertions.assertEquals(1,profiles.size());
+
+    }
 }

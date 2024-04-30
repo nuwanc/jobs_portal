@@ -36,12 +36,23 @@ public class AppControllerTest {
 
     @Test
     @WithMockUser
-    public void testPostRegister() throws Exception {
+    public void testPostRegisterSuccess() throws Exception {
         when(userService.register(any())).thenReturn(true);
         mockMvc.perform(
                 post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ email:'test@test.com', password: 'test123', firstName: 'Test First', lastName : 'TestLast'}").with(csrf()))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
+    public void testPostRegisterFail() throws  Exception {
+        when(userService.register(any())).thenReturn(false);
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{ email:'test@test.com', password: 'test123', firstName: 'Test First', lastName : 'TestLast'}").with(csrf()))
                 .andExpect(status().is3xxRedirection());
     }
 }
