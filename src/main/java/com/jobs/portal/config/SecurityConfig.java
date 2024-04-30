@@ -28,14 +28,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    //auth.requestMatchers("/","/assets/*.*").permitAll();
+                    auth.requestMatchers("/resume.do").hasRole("AGENT");
                     auth.requestMatchers("/main.do").authenticated();
                     auth.anyRequest().permitAll();
                 })
-                /*.authorizeRequests(auth -> {
-                    auth.requestMatchers("/").permitAll();
-                    auth.requestMatchers("/main.do").authenticated();
-                })*/
                 .formLogin(httpSecurityFormLoginConfigurer -> {
                     httpSecurityFormLoginConfigurer
                             .loginPage("/login")

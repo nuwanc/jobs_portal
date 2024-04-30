@@ -87,9 +87,9 @@ public class Education {
         this.level = level;
     }
 
-    public Profile getProfile() {
+    /*public Profile getProfile() {
         return profile;
-    }
+    }*/
 
     public void setProfile(Profile profile) {
         this.profile = profile;

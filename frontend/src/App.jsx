@@ -11,6 +11,7 @@ import ProfessionalEdit from "./components/ProfessionalEdit";
 import Education from "./components/Education";
 import EducationEdit from "./components/EducationEdit";
 import Search from "./components/Search";
+import AgentResume from "./components/AgentResume";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="professional.do/:id" element={<ProfessionalEdit />} />
             <Route path="resume.do" element={<Resume />} />
             <Route path="search.do" element={<Search />} />
+            <Route path="resumes.do/:id" element={<AgentResume/>}/>
          </Routes>
     </>
   )

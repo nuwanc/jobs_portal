@@ -6,6 +6,7 @@ import {
     AccordionHeader,
     AccordionItem,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 function Search() {
     const [search, setSearch] = useState({
@@ -67,6 +68,7 @@ function Search() {
             <td>{profile.email}</td>
             <td>{profile.mobile}</td>
             <td>{profile.address}</td>
+            <td><Button color="success" tag={Link} to={'/resumes.do/'+profile.id}>Resume</Button></td>
         </tr>
     });
 
@@ -189,6 +191,7 @@ function Search() {
                             <th>Email</th>
                             <th>Mobile</th>
                             <th>Address</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
