@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Container } from 'reactstrap';
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 function Resume() {
     const [profile, setProfile] = useState({});
@@ -74,12 +76,39 @@ function Resume() {
         </div>
     });
 
+        const downloadPdf = () => {
+            const input = document.getElementById('resume'); // Make sure 'resume' is the ID of the element you want to capture
+            html2canvas(input, {
+              scale: 2, // Adjust scale factor as needed for better resolution
+              useCORS: true // Helps with loading images from external URLs if needed
+            }).then((canvas) => {
+              const imgData = canvas.toDataURL('image/png');
+              const pdf = new jsPDF('p', 'mm', 'a4');
+              let imgWidth = 210; // A4 width in mm
+              let pageHeight = 297;  // A4 height in mm
+              let imgHeight = canvas.height * imgWidth / canvas.width;
+              let heightLeft = imgHeight;
+
+              let position = 0;
+              pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+              heightLeft -= pageHeight;
+
+              while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+              }
+              pdf.save('Resume-'+profile.name+'.pdf');
+            });
+          };
+
 
     return (
         <>
             <Container className="bg-light border">
-
-                <div class="container mt-5">
+                <button onClick={downloadPdf}>Download as PDF</button>
+                <div class="container mt-5" id="resume">
                     <div class="row">
                         <div class="col-12">
                             <h1 class="text-center mb-3">Resume of {profile.name}</h1>
