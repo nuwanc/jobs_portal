@@ -25,8 +25,7 @@ public class UserController {
             User user = dbUser.get();
             String role =user.getRole();
             return role.equals("USER") ? "true" : "false";
-        } else {
-            return "false";
         }
+        return "false";
     }
 }

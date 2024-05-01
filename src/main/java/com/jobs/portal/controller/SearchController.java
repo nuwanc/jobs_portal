@@ -26,40 +26,48 @@ public class SearchController {
         List<Profile> profiles = Collections.emptyList();
         switch (search.getSearchField()) {
             case "education":
-                if ("1".equals(search.getLevelOp())) {
-                    if (!"0".equals(search.getPassesOp())) {
-                        if ("1".equals(search.getPassesOp())) {
-                            profiles = searchService.searchByPasses(search.getLevel(),Integer.valueOf(search.getPasses()));
-                        } else {
-                            profiles = searchService.searchByMinimumPasses(search.getLevel(), Integer.valueOf(search.getPasses()));
+                switch (search.getLevelOp()) {
+                    case "1":
+                        switch (search.getPassesOp()) {
+                            case "1":
+                                profiles = searchService.searchByPasses(search.getLevel(),Integer.valueOf(search.getPasses()));
+                                break;
+                            case "2":
+                                profiles = searchService.searchByMinimumPasses(search.getLevel(), Integer.valueOf(search.getPasses()));
+                                break;
+                            default:
+                                profiles = searchService.searchByEducation(search.getLevel());
+                                break;
                         }
-                    } else {
-                        profiles = searchService.searchByEducation(search.getLevel());
-                    }
-                } else if ("2".equals(search.getLevelOp())) {
-                    profiles = searchService.searchByMinimumEducation(search.getLevel());
+                        break;
+                    case "2":
+                        profiles = searchService.searchByMinimumEducation(search.getLevel());
+                        break;
                 }
                 return ResponseEntity.ok(profiles);
             case "skill":
-                if (!"0".equals(search.getSkillOp())) {
-                    if ("1".equals(search.getSkillOp())) {
+                switch (search.getSkillOp()) {
+                    case "1":
                         profiles = searchService.searchBySkillNameAndYears(search.getSkillName(),Integer.valueOf(search.getSkillYears()));
-                    } else {
+                        break;
+                    case "2":
                         profiles = searchService.searchBySkillNameAndMinimumYears(search.getSkillName(),Integer.valueOf(search.getSkillYears()));
-                    }
-                } else {
-                    profiles = searchService.searchBySkillName(search.getSkillName());
+                        break;
+                    default:
+                        profiles = searchService.searchBySkillName(search.getSkillName());
+                        break;
                 }
                 return ResponseEntity.ok(profiles);
             case "experience":
-                if (!"0".equals(search.getExpOp())) {
-                    if ("1".equals(search.getExpOp())) {
+                switch (search.getExpOp()) {
+                    case "1":
                         profiles = searchService.searchByTitleAndYears(search.getJobTitle(),Integer.valueOf(search.getExpYears()));
-                    } else {
+                        break;
+                    case "2":
                         profiles = searchService.searchByTitleAndMinimumYears(search.getJobTitle(),Integer.valueOf(search.getExpYears()));
-                    }
-                } else {
-                    profiles = searchService.searchByTitle(search.getJobTitle());
+                    default:
+                        profiles = searchService.searchByTitle(search.getJobTitle());
+                        break;
                 }
                 return ResponseEntity.ok(profiles);
             default:

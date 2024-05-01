@@ -105,10 +105,7 @@ public class UserService {
 
     public boolean findUserByResetToken(String token) {
         Optional<User> dbUser = userRepository.findByResetToken(token);
-        if (dbUser.isPresent()) {
-            return true;
-        }
-        return false;
+        return dbUser.isPresent();
     }
 
     private void verificationEmail(User user) {

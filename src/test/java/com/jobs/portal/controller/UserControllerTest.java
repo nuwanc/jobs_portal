@@ -57,4 +57,20 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$").value(false));
     }
 
+    @Test
+    @WithMockUser
+    public void testGetUserNot() throws Exception {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setPassword("test");
+        user.setFirstName("testFirst");
+        user.setLastName("testLast");
+        user.setRole("AGENT");
+
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        mockMvc.perform(get("/api/user").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(false));
+    }
+
 }

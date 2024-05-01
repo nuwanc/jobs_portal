@@ -5,6 +5,7 @@ import com.jobs.portal.entity.profile.ProfileRepository;
 import com.jobs.portal.entity.user.User;
 import com.jobs.portal.entity.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,8 +21,10 @@ public class ProfessionalRepositoryTest {
     @Autowired
     private ProfessionalRepository professionalRepository;
 
-    @Test
-    public void testSave() {
+    private Long profileId;
+
+    @BeforeEach
+    void setup() {
         User user = new User();
         user.setEmail("test@test.com");
         user.setPassword("test");
@@ -34,32 +37,7 @@ public class ProfessionalRepositoryTest {
         profile.setName(user.getFirstName() + " " + user.getLastName());
         profile.setUser(user);
         profileRepository.save(profile);
-
-        Professional professional = new Professional();
-        professional.setProfile(profile);
-        professional.setProfessionalBody("BCS");
-        professional.setName("PGD");
-        professional.setObtainedDate(LocalDate.of(2008,10,01));
-        professionalRepository.save(professional);
-
-        Assertions.assertEquals(professional.getName(),"PGD");
-        Assertions.assertEquals(professional.getProfessionalBody(),"BCS");
-    }
-
-    @Test
-    public void testGetProfessional() {
-        User user = new User();
-        user.setEmail("test@test.com");
-        user.setPassword("test");
-        user.setFirstName("testFirst");
-        user.setLastName("testLast");
-        userRepository.save(user);
-
-        Profile profile = new Profile();
-        profile.setEmail(user.getEmail());
-        profile.setName(user.getFirstName() + " " + user.getLastName());
-        profile.setUser(user);
-        profileRepository.save(profile);
+        profileId = profile.getId();
 
         Professional professional = new Professional();
         professional.setProfile(profile);
@@ -74,7 +52,21 @@ public class ProfessionalRepositoryTest {
         professional1.setName("JCP");
         professional1.setObtainedDate(LocalDate.of(2010,10,01));
         professionalRepository.save(professional1);
+    }
 
-        Assertions.assertEquals(professionalRepository.findByProfileId(profile.getId()).size(),2);
+    @Test
+    public void testFindByProfileId() {
+        Assertions.assertEquals(2,professionalRepository.findByProfileId(profileId).size());
+    }
+    @Test
+    public void testFindByName() {
+        Assertions.assertEquals(1,professionalRepository.findByName("PGD").size());
+        Assertions.assertEquals(0,professionalRepository.findByName("CCTI").size());
+    }
+
+    @Test
+    public void testFindByProfessionalBody() {
+        Assertions.assertEquals(1,professionalRepository.findByProfessionalBody("BCS").size());
+        Assertions.assertEquals(0,professionalRepository.findByProfessionalBody("CIMA").size());
     }
 }

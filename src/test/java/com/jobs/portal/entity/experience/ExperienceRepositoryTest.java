@@ -5,6 +5,7 @@ import com.jobs.portal.entity.profile.ProfileRepository;
 import com.jobs.portal.entity.user.User;
 import com.jobs.portal.entity.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,8 +21,10 @@ public class ExperienceRepositoryTest {
     @Autowired
     private ExperienceRepository experienceRepository;
 
-    @Test
-    public void testSave() {
+    private Long profileId;
+
+    @BeforeEach
+    void setup() {
         User user = new User();
         user.setEmail("test@test.com");
         user.setPassword("test");
@@ -34,67 +37,7 @@ public class ExperienceRepositoryTest {
         profile.setName(user.getFirstName() + " " + user.getLastName());
         profile.setUser(user);
         profileRepository.save(profile);
-
-        Experience experience = new Experience();
-        experience.setProfile(profile);
-        experience.setCompany("ABC");
-        experience.setJobTitle("SE");
-        experience.setFromDate(LocalDate.of(2000,10,20));
-        experience.setToDate(LocalDate.of(2010,10,12));
-        experienceRepository.save(experience);
-
-        Assertions.assertEquals(experience.getCompany(),"ABC");
-        Assertions.assertEquals(experience.getJobTitle(),"SE");
-    }
-
-    @Test
-    public void testGetExperience() {
-        User user = new User();
-        user.setEmail("test@test.com");
-        user.setPassword("test");
-        user.setFirstName("testFirst");
-        user.setLastName("testLast");
-        userRepository.save(user);
-
-        Profile profile = new Profile();
-        profile.setEmail(user.getEmail());
-        profile.setName(user.getFirstName() + " " + user.getLastName());
-        profile.setUser(user);
-        profileRepository.save(profile);
-
-        Experience experience = new Experience();
-        experience.setProfile(profile);
-        experience.setCompany("ABC");
-        experience.setJobTitle("SE");
-        experience.setFromDate(LocalDate.of(2000,10,20));
-        experience.setToDate(LocalDate.of(2010,10,12));
-        experienceRepository.save(experience);
-
-        Experience experience1 = new Experience();
-        experience1.setProfile(profile);
-        experience1.setCompany("BBC");
-        experience1.setJobTitle("SSE");
-        experience.setFromDate(LocalDate.of(2011,10,20));
-        experience.setToDate(LocalDate.of(2021,10,12));
-        experienceRepository.save(experience1);
-
-        Assertions.assertEquals(experienceRepository.findByProfileId(profile.getId()).size(),2);
-    }
-
-    @Test
-    public void testGetExperienceByYears() {
-        User user = new User();
-        user.setEmail("test@test.com");
-        user.setPassword("test");
-        user.setFirstName("testFirst");
-        user.setLastName("testLast");
-        userRepository.save(user);
-
-        Profile profile = new Profile();
-        profile.setEmail(user.getEmail());
-        profile.setName(user.getFirstName() + " " + user.getLastName());
-        profile.setUser(user);
-        profileRepository.save(profile);
+        profileId = profile.getId();
 
         Experience experience = new Experience();
         experience.setProfile(profile);
@@ -119,9 +62,24 @@ public class ExperienceRepositoryTest {
         experience1.setFromDate(LocalDate.of(2011,10,20));
         experience1.setToDate(LocalDate.of(2021,10,12));
         experienceRepository.save(experience1);
-
-        Assertions.assertEquals(experienceRepository.findByTitleAndYears("SSE",5).size(),1);
-        Assertions.assertEquals(experienceRepository.findByTitleAndYears("SE",5).size(),1);
-        Assertions.assertEquals(experienceRepository.findByTitleAndYears("SE",15).size(),0);
+    }
+    @Test
+    public void testFindByProfileId() {
+        Assertions.assertEquals(3,experienceRepository.findByProfileId(profileId).size());
+    }
+    @Test
+    public void testFindByTitle() {
+        Assertions.assertEquals(1,experienceRepository.findByTitle("SE").size());
+        Assertions.assertEquals(0,experienceRepository.findByTitle("TL").size());
+    }
+    @Test
+    public void testFindByTitleAndYears() {
+        Assertions.assertEquals(1,experienceRepository.findByTitleAndYears("SE",6).size());
+        Assertions.assertEquals(0,experienceRepository.findByTitleAndYears("SE",8).size());
+    }
+    @Test
+    public void testFindByTitleAndMinimumYears() {
+        Assertions.assertEquals(1,experienceRepository.findByTitleAndMinimumYears("SE",5).size());
+        Assertions.assertEquals(0,experienceRepository.findByTitleAndMinimumYears("SE",15).size());
     }
 }
