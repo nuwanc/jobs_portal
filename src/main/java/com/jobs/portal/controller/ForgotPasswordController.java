@@ -44,8 +44,6 @@ public class ForgotPasswordController {
 
     }
 
-
-
     @PostMapping("/reset_password")
     public String resetPasswordProcess(@Param(value ="token")String token, @Param(value = "password")String password,Model model) {
         boolean found = userService.findUserByResetToken(token);

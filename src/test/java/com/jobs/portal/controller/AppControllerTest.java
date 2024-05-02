@@ -80,9 +80,11 @@ public class AppControllerTest {
     }
 
     @Test
-    @WithAnonymousUser
+    @WithMockUser
     public void testLogin() throws Exception {
-        mockMvc.perform(get("/login")).andExpect(status().isOk());
+        mockMvc.perform(get("/login"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test

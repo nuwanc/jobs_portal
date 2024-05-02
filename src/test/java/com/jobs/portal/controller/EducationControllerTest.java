@@ -90,6 +90,53 @@ public class EducationControllerTest {
 
     @Test
     @WithMockUser
+    public void testGetEducationByLevel() throws  Exception {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setPassword("test");
+        user.setFirstName("testFirst");
+        user.setLastName("testLast");
+        user.setRole("USER");
+
+        Profile profile = new Profile();
+        profile.setUser(user);
+        profile.setId(100000L);
+        user.setProfile(profile);
+
+        Education education = new Education();
+        education.setProfile(profile);
+        education.setField("science");
+        education.setInstitute("Kingston Uni.");
+        education.setDegree("B.Sc.");
+        education.setStartDate(LocalDate.of(2000, 5, 1));
+        education.setEndDate(LocalDate.of(2004, 11, 30));
+        education.setLevel(EducationLevel.BACHELORS);
+
+        Education education1 = new Education();
+        education1.setPasses(8);
+        education1.setLevel(EducationLevel.GCSEOL);
+        education1.setInstitute("SMC");
+        education1.setProfile(profile);
+
+
+        Education education2 = new Education();
+        education2.setPasses(3);
+        education2.setProfile(profile);
+        education2.setInstitute("SMC");
+        education2.setLevel(EducationLevel.GCSEAL);
+        education2.setField("science");
+
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        when(educationRepository.findByProfileIdOrderByLevel(anyLong())).thenReturn(List.of(education,education1,education2));
+
+        mockMvc.perform(get("/api/education/level").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)));
+
+    }
+
+    @Test
+    @WithMockUser
     public void testSaveEducation() throws Exception {
         User user = new User();
         user.setEmail("test@test.com");

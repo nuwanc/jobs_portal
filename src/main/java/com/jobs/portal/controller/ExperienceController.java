@@ -23,7 +23,7 @@ public class ExperienceController {
     }
 
     @GetMapping
-    public List<Experience> skill(Authentication principal) {
+    public List<Experience> experience(Authentication principal) {
         Optional<User> dbUser = userRepository.findByEmail(principal.getName());
         User user = dbUser.get();
         List<Experience> experiences = experienceRepository.findByProfileId(user.getProfile().getId());
@@ -31,7 +31,7 @@ public class ExperienceController {
     }
 
     @PostMapping
-    public Experience saveSkill(@RequestBody Experience experience, Authentication principal) {
+    public Experience saveExperience(@RequestBody Experience experience, Authentication principal) {
         Optional<User> dbUser = userRepository.findByEmail(principal.getName());
         User user = dbUser.get();
         experience.setProfile(user.getProfile());
@@ -39,7 +39,7 @@ public class ExperienceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteSkill(@PathVariable Long id) {
+    public ResponseEntity deleteExperience(@PathVariable Long id) {
         experienceRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
